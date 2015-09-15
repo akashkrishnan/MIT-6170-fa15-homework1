@@ -14,23 +14,28 @@ var Trie = function () {
  * WARNING: does not verify if the prefix is associated with the Trie!
  *
  * @param {string} [prefix] - prefix to be prepended to each suffix
+ * @param {number} [n] - maximum number of words to obtain; 0 means unlimited
  * @param {Array.<string>} [list] - list of strings to push results to
  * @returns {Array.<string>} - list of words with the specified prefixes
  */
-Trie.prototype.list = function ( prefix, list ) {
+Trie.prototype.list = function ( prefix, n, list ) {
 
   list = list || [];
 
-  // Check if we're at a word
-  if ( this.word ) {
-    list.push( prefix );
-  }
+  if ( !n || list.length !== n ) {
 
-  // Iterate over children and recurse the listing
-  for ( var char in this.children ) {
-    if ( this.children.hasOwnProperty( char ) ) {
-      this.children[ char ].list( prefix + char, list );
+    // Check if we're at a word
+    if ( this.word ) {
+      list.push( prefix );
     }
+
+    // Iterate over children and recurse the listing
+    for ( var char in this.children ) {
+      if ( this.children.hasOwnProperty( char ) ) {
+        this.children[ char ].list( prefix + char, n, list );
+      }
+    }
+
   }
 
   return list;
@@ -73,10 +78,11 @@ Trie.prototype.insert = function ( word, i ) {
  * Returns a list of words under the current Trie that share the specified prefix.
  *
  * @param {string} prefix - prefix of words to autocomplete
+ * @param {number} [n] - maximum number of words to obtain; 0 means unlimited
  * @param {number} [i=0] - starting index of word to insert
  * @returns {Array.<string>} list of autocomplete strings that share the specified prefix
  */
-Trie.prototype.autocomplete = function ( prefix, i ) {
+Trie.prototype.autocomplete = function ( prefix, n, i ) {
 
   i = i || 0;
 
@@ -90,7 +96,7 @@ Trie.prototype.autocomplete = function ( prefix, i ) {
     if ( this.children[ char ] ) {
 
       // Continue recursively matching characters
-      return this.children[ char ].autocomplete( prefix, ++i );
+      return this.children[ char ].autocomplete( prefix, n, ++i );
 
     } else {
 
@@ -102,7 +108,7 @@ Trie.prototype.autocomplete = function ( prefix, i ) {
   } else {
 
     // We've found our prefix; now, to find all suffixes/words
-    return this.list( prefix );
+    return this.list( prefix, n );
 
   }
 };

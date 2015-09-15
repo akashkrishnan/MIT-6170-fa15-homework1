@@ -1,61 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>6.170 Assignment 1: Prefix Match</title>
-  <link rel="stylesheet" href="./index.css" type="text/css" charset="utf-8">
-</head>
 
-<body>
+  <head>
+    <title>6.170 Assignment 1: Prefix Match</title>
+    <link rel="stylesheet" href="./index.css" type="text/css" charset="utf-8">
+  </head>
 
-  <input id="search-term-input" type="text" placeholder="Type something...">
-  <ul id="results-list"></ul>
+  <body>
 
-  <script src="./words.js" charset="utf-8"></script>
-  <script src="./controller.js" charset="utf-8"></script>
-  <script>
+    <input id="search-term-input" type="text" placeholder="Type something...">
+    <ul id="results-list"></ul>
 
-  	document.addEventListener('DOMContentLoaded', function () {
+    <script src="./words.js" charset="utf-8"></script>
+    <script src="./trie.js" charset="utf-8"></script>
+    <script src="./controller.js" charset="utf-8"></script>
 
-	  // Instantiate your trie data type here, and load the words 
-	  // in the provided JSON dictionary (accessible as an array
-	  // stored in the variable 'WORDS') into the data structure.
+    <script>
 
-	  // After instantiating and populating your trie above, you need
-	  // to register a listener function to be called after each 
-	  // keypress. The body of the function below will serve this
-	  // purpose -- note that, as a listener, it will be called _each time_
-	  // a keypress occurs. The current value in the search box will be passed 
-	  // in via the argument 'word'. Perform whatever operations are 
-	  // necessary to obtain a list of suggested words from your trie, then 
-	  // populate the drop-down using the provided methods 'clearSearchResults'
-	  // and 'appendToSearchResults'. An example of this is shown 
-	  // below where we simply display the current input along with
-	  // some random words from the dictionary. You'll want to populate
-	  // the list with the desired suggestions instead.
-	  CONTROLLER.registerAutocompleteListener(function (word) {
+      document.addEventListener( 'DOMContentLoaded', function () {
 
-	  	// This function is called on _every_ keypress (that is,
-	  	// change to the search box). Modify this sample with your 
-	    // code to provide autocompletion suggestions.
+        // Lazy load the data in order to not block the browser
+        var trie = new Trie();
+        WORDS.forEach( function ( word, i ) {
+          trie.insert( WORDS[ i ].trim().toLowerCase() ); // IGNORE LEADING & TRAILING WHITESPACE AND CASE
+        } );
 
-	  	var NUM_WORDS_TO_SHOW = 10;
-	  	var i, randomWord;
+        CONTROLLER.registerAutocompleteListener( function ( word ) {
 
-	  	CONTROLLER.clearSearchResults();
+          var NUM_WORDS_TO_SHOW = 10;
 
-	  	// Display the current word
-	  	CONTROLLER.appendToSearchResults(word);
+          CONTROLLER.clearSearchResults();
 
-	  	// Display some random words
-	  	for (i = 0; i < NUM_WORDS_TO_SHOW; ++i) {
-	  	  randomWord = WORDS[Math.floor(Math.random() * WORDS.length)];
-	  	  CONTROLLER.appendToSearchResults(randomWord);
-	  	}
-	  	
-      });
+          var autocomplete = trie.autocomplete( word.trim().toLowerCase(), NUM_WORDS_TO_SHOW );
+          for ( var i = 0, n = autocomplete.length; i < n; i++ ) {
+            CONTROLLER.appendToSearchResults( autocomplete[ i ] );
+          }
 
-  	});
+        } );
 
-  </script>
-</body>
+      } );
+
+    </script>
+
+  </body>
+
 </html>
