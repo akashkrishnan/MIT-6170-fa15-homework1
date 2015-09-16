@@ -28,8 +28,8 @@
         WORDS.sort();
 
         var trie = Trie();
-        WORDS.forEach( function ( word ) {
-          trie.insert( word.trim() ); // IGNORE LEADING & TRAILING WHITESPACE
+        WORDS.forEach( function ( word ) { // EXAMPLE USE OF FUNCTIONALS
+          trie.insert( word.trim() ); // ignore leading/trailing whitespace
         } );
 
         CONTROLLER.registerAutocompleteListener( function ( word ) {
@@ -37,10 +37,14 @@
           // Clear search results
           CONTROLLER.clearSearchResults();
 
-          // Obtain autocomplete words and add to search results
-          var autocomplete = trie.autocomplete( word.trim(), NUM_WORDS_TO_SHOW );
+          // Obtain autocomplete words
+          var autocomplete = trie.autocomplete( word.trim(), NUM_WORDS_TO_SHOW ); // ignore leading/trailing whitespace
+
+          // Sort in ascending order
           autocomplete.sort();
-          autocomplete.forEach( function ( word ) {
+
+          // Add to search results
+          autocomplete.forEach( function ( word ) { // EXAMPLE USE OF FUNCTIONALS
             CONTROLLER.appendToSearchResults( word );
           } );
 

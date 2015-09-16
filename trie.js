@@ -40,7 +40,7 @@ var Trie = function () {
       }
 
       // Iterate over children and recurse the listing
-      Object.keys( this.children ).forEach( function ( char ) {
+      Object.keys( this.children ).forEach( function ( char ) { // EXAMPLE USE OF FUNCTIONALS
         this.children[ char ].list( n, list );
       }.bind( this ) );
 
