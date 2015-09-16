@@ -123,7 +123,8 @@ var Trie = function () {
   var root = TrieNode();
 
   /**
-   * Adds a word to the Trie data structure.
+   * Adds a word to the Trie data structure. Duplicate case-insensitive words replace pre-existing words. For
+   * example, if apple' and 'Apple' were inserted in that order, only the last duplicate insert 'Apple' would exist.
    *
    * @param {string} word - the word to add
    */
@@ -132,9 +133,9 @@ var Trie = function () {
   };
 
   /**
-   * Returns a list of words in the Trie that share the specified prefix.
+   * Returns a list of words in the Trie in no particular order that share the specified case-insensitive prefix.
    *
-   * @param {string} prefix - prefix of words to autocomplete
+   * @param {string} prefix - case-insensitive prefix of words to autocomplete
    * @param {number} [n=0] - maximum number of words to obtain; 0 means unlimited
    */
   that.autocomplete = function ( prefix, n ) {

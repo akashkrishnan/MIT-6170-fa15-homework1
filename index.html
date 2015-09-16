@@ -39,6 +39,7 @@
 
           // Obtain autocomplete words and add to search results
           var autocomplete = trie.autocomplete( word.trim(), NUM_WORDS_TO_SHOW );
+          autocomplete.sort();
           autocomplete.forEach( function ( word ) {
             CONTROLLER.appendToSearchResults( word );
           } );
