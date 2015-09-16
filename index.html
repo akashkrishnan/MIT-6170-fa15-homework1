@@ -23,6 +23,9 @@
 
         var NUM_WORDS_TO_SHOW = 10;
 
+        // Sort WORDS in alphabetically ascending order
+        WORDS.sort();
+
         var trie = new Trie();
         WORDS.forEach( function ( word ) {
           trie.insert( word.trim().toLowerCase() ); // IGNORE LEADING & TRAILING WHITESPACE AND CASE
