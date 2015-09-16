@@ -13,7 +13,7 @@ var Trie = function () {
     var that = Object.create( TrieNode.prototype );
 
     that.children = {};
-    that.word = false;
+    that.word = null;
 
     Object.seal( that );
 
@@ -22,16 +22,13 @@ var Trie = function () {
   };
 
   /**
-   * Returns a list of suffixes under the current TrieNode, each prepended by an optional prefix.
+   * Returns a list of words under the current TrieNode.
    *
-   * WARNING: does not verify if the prefix is associated with the TrieNode!
-   *
-   * @param {string} [prefix] - prefix to be prepended to each suffix
    * @param {number} [n] - maximum number of words to obtain; 0 means unlimited
    * @param {Array.<string>} [list] - list of strings to push results to
-   * @returns {Array.<string>} - list of words with the specified prefixes
+   * @returns {Array.<string>} - list of words
    */
-  TrieNode.prototype.list = function ( prefix, n, list ) {
+  TrieNode.prototype.list = function ( n, list ) {
 
     list = list || [];
 
@@ -39,15 +36,13 @@ var Trie = function () {
 
       // Check if we're at a word
       if ( this.word ) {
-        list.push( prefix );
+        list.push( this.word );
       }
 
       // Iterate over children and recurse the listing
-      for ( var char in this.children ) {
-        if ( this.children.hasOwnProperty( char ) ) {
-          this.children[ char ].list( prefix + char, n, list );
-        }
-      }
+      Object.keys( this.children ).forEach( function ( char ) {
+        this.children[ char ].list( n, list );
+      }.bind( this ) );
 
     }
 
@@ -69,6 +64,8 @@ var Trie = function () {
     // Check if we have a character to process
     if ( char ) {
 
+      char = char.toLowerCase();
+
       // Add the character child trie if it doesn't exist
       if ( !this.children[ char ] ) {
         this.children[ char ] = new TrieNode();
@@ -80,7 +77,7 @@ var Trie = function () {
     } else {
 
       // No character means end of word
-      this.word = true;
+      this.word = word;
 
     }
   };
@@ -117,7 +114,7 @@ var Trie = function () {
     } else {
 
       // We've found our prefix; now, to find all suffixes/words
-      return this.list( prefix, n );
+      return this.list( n );
 
     }
   };
@@ -141,7 +138,7 @@ var Trie = function () {
    * @param {number} [n=0] - maximum number of words to obtain; 0 means unlimited
    */
   that.autocomplete = function ( prefix, n ) {
-    return root.autocomplete( prefix, n || 0, 0 );
+    return root.autocomplete( prefix.toLowerCase(), n || 0, 0 );
   };
 
   Object.freeze( that );

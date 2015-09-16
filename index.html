@@ -29,7 +29,7 @@
 
         var trie = Trie();
         WORDS.forEach( function ( word ) {
-          trie.insert( word.trim().toLowerCase() ); // IGNORE LEADING & TRAILING WHITESPACE AND CASE
+          trie.insert( word.trim() ); // IGNORE LEADING & TRAILING WHITESPACE
         } );
 
         CONTROLLER.registerAutocompleteListener( function ( word ) {
@@ -38,7 +38,7 @@
           CONTROLLER.clearSearchResults();
 
           // Obtain autocomplete words and add to search results
-          var autocomplete = trie.autocomplete( word.trim().toLowerCase(), NUM_WORDS_TO_SHOW );
+          var autocomplete = trie.autocomplete( word.trim(), NUM_WORDS_TO_SHOW );
           autocomplete.forEach( function ( word ) {
             CONTROLLER.appendToSearchResults( word );
           } );
