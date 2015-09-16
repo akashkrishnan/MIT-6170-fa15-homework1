@@ -1,3 +1,5 @@
+'use strict';
+
 var CONTROLLER = (function ( document ) {
 
   // The <input type="text"> containing the search term.
@@ -70,7 +72,7 @@ var CONTROLLER = (function ( document ) {
     // If there's a search term and a registered listener,
     // invoke the listener with the search term.
     var searchTerm = searchTermInput.value;
-    if ( searchTerm.length > 0 && autocompleteListener != undefined ) {
+    if ( searchTerm.length > 0 && autocompleteListener !== undefined ) {
       autocompleteListener( searchTerm );
     }
   }

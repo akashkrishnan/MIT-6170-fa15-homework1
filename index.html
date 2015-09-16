@@ -17,24 +17,27 @@
 
     <script>
 
+      'use strict';
+
       document.addEventListener( 'DOMContentLoaded', function () {
 
-        // Lazy load the data in order to not block the browser
+        var NUM_WORDS_TO_SHOW = 10;
+
         var trie = new Trie();
-        WORDS.forEach( function ( word, i ) {
-          trie.insert( WORDS[ i ].trim().toLowerCase() ); // IGNORE LEADING & TRAILING WHITESPACE AND CASE
+        WORDS.forEach( function ( word ) {
+          trie.insert( word.trim().toLowerCase() ); // IGNORE LEADING & TRAILING WHITESPACE AND CASE
         } );
 
         CONTROLLER.registerAutocompleteListener( function ( word ) {
 
-          var NUM_WORDS_TO_SHOW = 10;
-
+          // Clear search results
           CONTROLLER.clearSearchResults();
 
+          // Obtain autocomplete words and add to search results
           var autocomplete = trie.autocomplete( word.trim().toLowerCase(), NUM_WORDS_TO_SHOW );
-          for ( var i = 0, n = autocomplete.length; i < n; i++ ) {
-            CONTROLLER.appendToSearchResults( autocomplete[ i ] );
-          }
+          autocomplete.forEach( function ( word ) {
+            CONTROLLER.appendToSearchResults( word );
+          } );
 
         } );
 
