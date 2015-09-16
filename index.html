@@ -27,7 +27,7 @@
         // Sort WORDS in alphabetically ascending order
         WORDS.sort();
 
-        var trie = new Trie();
+        var trie = Trie();
         WORDS.forEach( function ( word ) {
           trie.insert( word.trim().toLowerCase() ); // IGNORE LEADING & TRAILING WHITESPACE AND CASE
         } );

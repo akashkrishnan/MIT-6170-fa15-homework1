@@ -2,19 +2,21 @@
 
 /**
  * Constructs a Trie data structure.
- *
- * @constructor
  */
 var Trie = function () {
 
   /**
    * Constructs a TrieNode.
-   *
-   * @constructor
    */
   var TrieNode = function () {
-    this.children = {};
-    this.word = false;
+
+    var that = Object.create( TrieNode.prototype );
+
+    that.children = {};
+    that.word = false;
+
+    return that;
+
   };
 
   /**
@@ -118,14 +120,15 @@ var Trie = function () {
     }
   };
 
-  var root = new TrieNode();
+  var that = Object.create( Trie.prototype );
+  var root = TrieNode();
 
   /**
    * Adds a word to the Trie data structure.
    *
    * @param {string} word - the word to add
    */
-  this.insert = function ( word ) {
+  that.insert = function ( word ) {
     root.insert( word, 0 );
   };
 
@@ -133,10 +136,12 @@ var Trie = function () {
    * Returns a list of words in the Trie that share the specified prefix.
    *
    * @param {string} prefix - prefix of words to autocomplete
-   * @param {number} [n] - maximum number of words to obtain; 0 means unlimited
+   * @param {number} [n=0] - maximum number of words to obtain; 0 means unlimited
    */
-  this.autocomplete = function ( prefix, n ) {
+  that.autocomplete = function ( prefix, n ) {
     return root.autocomplete( prefix, n || 0, 0 );
   };
+
+  return that;
 
 };
