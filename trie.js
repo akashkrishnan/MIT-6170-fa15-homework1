@@ -7,6 +7,8 @@ var Trie = function () {
 
   /**
    * Constructs a TrieNode.
+   *
+   * @private
    */
   var TrieNode = function () {
 
