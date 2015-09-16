@@ -15,6 +15,8 @@ var Trie = function () {
     that.children = {};
     that.word = false;
 
+    Object.seal( that );
+
     return that;
 
   };
@@ -141,6 +143,8 @@ var Trie = function () {
   that.autocomplete = function ( prefix, n ) {
     return root.autocomplete( prefix, n || 0, 0 );
   };
+
+  Object.freeze( that );
 
   return that;
 
