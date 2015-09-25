@@ -194,7 +194,48 @@ QUnit.test( 'Lexicographic Ordering', function ( assert ) {
 
 } );
 
-QUnit.skip( 'Case Insensitivity', function ( assert ) {
+QUnit.test( 'Case Insensitivity', function ( assert ) {
+
+  var trie = new Trie();
+
+  var sorted = [
+    'Acai Berries',
+    'Clementine',
+    'Damson',
+    'Date',
+    'Dragonfruit',
+    'Elderberry',
+    'Goji berry',
+    'Honeydew',
+    'Lychee',
+    'Persimmon',
+    'Pineapple',
+    'Pomegranate',
+    'Ugli fruit',
+    'Watermelon'
+  ];
+
+  [
+    'Ugli fruit',
+    'Dragonfruit',
+    'Pomegranate',
+    'Lychee',
+    'Date',
+    'Persimmon',
+    'Acai Berries',
+    'Watermelon',
+    'Honeydew',
+    'Damson',
+    'Elderberry',
+    'Goji berry',
+    'Pineapple',
+    'Clementine'
+  ].forEach( trie.insert );
+
+  assert.deepEqual( trie.autocomplete( 'WATERMELON' ), [ 'Watermelon' ], 'Getting all entries with prefix' +
+                                                                         ' "WATERMELON".' );
+  assert.deepEqual( trie.autocomplete( 'DaMsOn' ), [ 'Damson' ], 'Getting all entries with prefix "DaMsOn".' );
+  assert.deepEqual( trie.autocomplete( 'PinEAPPLE' ), [ 'Pineapple' ], 'Getting all entries with prefix "PinEAPPLE".' );
 
 } );
 
