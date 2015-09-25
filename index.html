@@ -24,9 +24,6 @@
 
         var NUM_WORDS_TO_SHOW = 10;
 
-        // Sort WORDS in alphabetically ascending order
-        WORDS.sort();
-
         var trie = Trie();
         WORDS.forEach( function ( word ) { // EXAMPLE USE OF FUNCTIONALS
           trie.insert( word.trim() ); // ignore leading/trailing whitespace
@@ -39,9 +36,6 @@
 
           // Obtain autocomplete words
           var autocomplete = trie.autocomplete( word.trim(), NUM_WORDS_TO_SHOW ); // ignore leading/trailing whitespace
-
-          // Sort in ascending order
-          autocomplete.sort();
 
           // Add to search results
           autocomplete.forEach( function ( word ) { // EXAMPLE USE OF FUNCTIONALS

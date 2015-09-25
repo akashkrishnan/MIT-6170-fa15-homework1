@@ -26,27 +26,22 @@ var Trie = function () {
   /**
    * Returns a list of words under the TrieNode.
    *
-   * @param {number} [n] - maximum number of words to obtain; 0 means unlimited
    * @param {Array.<string>} [list] - list of strings to push results to
    * @returns {Array.<string>} - list of words
    */
-  TrieNode.prototype.list = function ( n, list ) {
+  TrieNode.prototype.list = function ( list ) {
 
     list = list || [];
 
-    if ( !n || list.length !== n ) {
-
-      // Check if we're at a word
-      if ( this.word ) {
-        list.push( this.word );
-      }
-
-      // Iterate over children and recurse the listing
-      Object.keys( this.children ).forEach( function ( char ) { // EXAMPLE USE OF FUNCTIONALS
-        this.children[ char ].list( n, list );
-      }.bind( this ) );
-
+    // Check if we're at a word
+    if ( this.word ) {
+      list.push( this.word );
     }
+
+    // Iterate over children and recurse the listing
+    Object.keys( this.children ).forEach( function ( char ) { // EXAMPLE USE OF FUNCTIONALS
+      this.children[ char ].list( list );
+    }.bind( this ) );
 
     return list;
 
@@ -88,11 +83,10 @@ var Trie = function () {
    * Returns a list of words under the current TrieNode that share the specified prefix.
    *
    * @param {string} prefix - prefix of words to autocomplete
-   * @param {number} n - maximum number of words to obtain; 0 means unlimited
    * @param {number} i - starting index of word to insert
    * @returns {Array.<string>} list of autocomplete strings that share the specified prefix
    */
-  TrieNode.prototype.autocomplete = function ( prefix, n, i ) {
+  TrieNode.prototype.autocomplete = function ( prefix, i ) {
 
     // Character we're dealing with
     var char = prefix[ i ];
@@ -104,7 +98,7 @@ var Trie = function () {
       if ( this.children[ char ] ) {
 
         // Continue recursively matching characters
-        return this.children[ char ].autocomplete( prefix, n, ++i );
+        return this.children[ char ].autocomplete( prefix, ++i );
 
       } else {
 
@@ -116,7 +110,7 @@ var Trie = function () {
     } else {
 
       // We've found our prefix; now, to find all suffixes/words
-      return this.list( n );
+      return this.list();
 
     }
   };
@@ -126,7 +120,7 @@ var Trie = function () {
 
   /**
    * Adds a word to the Trie data structure. Duplicate case-insensitive words replace pre-existing words. For
-   * example, if apple' and 'Apple' were inserted in that order, only the last duplicate insert 'Apple' would exist.
+   * example, if 'apple' and 'Apple' were inserted in that order, only the last duplicate insert 'Apple' would exist.
    *
    * @param {string} word - the word to add
    */
@@ -135,13 +129,16 @@ var Trie = function () {
   };
 
   /**
-   * Returns a list of words in the Trie in no particular order that share the specified case-insensitive prefix.
+   * Returns a list of `n` words in the Trie in absolute lexicographic order that share the specified case-insensitive
+   * prefix.
    *
    * @param {string} prefix - case-insensitive prefix of words to autocomplete
    * @param {number} [n=0] - maximum number of words to obtain; 0 means unlimited
    */
   that.autocomplete = function ( prefix, n ) {
-    return root.autocomplete( prefix.toLowerCase(), n || 0, 0 );
+    var results = root.autocomplete( (prefix || '').toLowerCase(), 0 );
+    results.sort();
+    return results.slice( 0, n );
   };
 
   Object.freeze( that );
