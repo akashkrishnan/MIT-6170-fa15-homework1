@@ -239,6 +239,70 @@ QUnit.test( 'Case Insensitivity', function ( assert ) {
 
 } );
 
-QUnit.skip( 'Result Size Limiting', function ( assert ) {
+QUnit.test( 'Result Size Limiting', function ( assert ) {
+
+  var trie = Trie();
+
+  [ 'so', 'some', 'something', 'somethings', 'someone', 'somewhere' ].forEach( trie.insert );
+
+  assert.deepEqual(
+    trie.autocomplete( 's' ),
+    [ 'so', 'some', 'someone', 'something', 'somethings', 'somewhere' ],
+    'Getting all entries with prefix "s".'
+  );
+
+  assert.deepEqual(
+    trie.autocomplete( 's', 1 ),
+    [ 'so' ],
+    'Getting 1 entry with prefix "s".'
+  );
+
+  assert.deepEqual(
+    trie.autocomplete( 's', 5 ),
+    [ 'so', 'some', 'someone', 'something', 'somethings' ],
+    'Getting 5 entries with prefix "s".'
+  );
+
+  assert.deepEqual(
+    trie.autocomplete( 'so', 5 ),
+    [ 'so', 'some', 'someone', 'something', 'somethings' ],
+    'Getting 5 entries with prefix "so".'
+  );
+
+  assert.deepEqual(
+    trie.autocomplete( 's', 10 ),
+    [ 'so', 'some', 'someone', 'something', 'somethings', 'somewhere' ],
+    'Getting 10 entries with prefix "s".'
+  );
+
+  assert.deepEqual(
+    trie.autocomplete( 'so', 10 ),
+    [ 'so', 'some', 'someone', 'something', 'somethings', 'somewhere' ],
+    'Getting 10 entries with prefix "so".'
+  );
+
+  assert.deepEqual(
+    trie.autocomplete( 'some' ),
+    [ 'some', 'someone', 'something', 'somethings', 'somewhere' ],
+    'Getting all entries with prefix "some".'
+  );
+
+  assert.deepEqual(
+    trie.autocomplete( 'some', 1 ),
+    [ 'some' ],
+    'Getting 1 entry with prefix "some".'
+  );
+
+  assert.deepEqual(
+    trie.autocomplete( 'some', 3 ),
+    [ 'some', 'someone', 'something' ],
+    'Getting 3 entries with prefix "some".'
+  );
+
+  assert.deepEqual(
+    trie.autocomplete( 'some', 10 ),
+    [ 'some', 'someone', 'something', 'somethings', 'somewhere' ],
+    'Getting 10 entries with prefix "some".'
+  );
 
 } );
