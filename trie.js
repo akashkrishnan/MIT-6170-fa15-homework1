@@ -24,7 +24,7 @@ var Trie = function () {
   };
 
   /**
-   * Returns a list of words under the current TrieNode.
+   * Returns a list of words under the TrieNode.
    *
    * @param {number} [n] - maximum number of words to obtain; 0 means unlimited
    * @param {Array.<string>} [list] - list of strings to push results to

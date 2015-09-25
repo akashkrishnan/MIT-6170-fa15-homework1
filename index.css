@@ -27,9 +27,11 @@ body, input {
 #results-list li {
   list-style-type: none;
   padding: 16px;
+  cursor: pointer;
 }
 
 #results-list li:hover {
   background: #EEEEEE;
-  cursor: pointer;
 }
+
+
